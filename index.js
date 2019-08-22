@@ -6,14 +6,15 @@ const user = require('./controllers/userController');
 const stocks = require('./controllers/stocksController');
 const weather = require('./controllers/weathercontroller');
 const bodyParser = require('body-parser');
+const sequelize = require('./db');
 
 sequelize.sync() //not in gardenServer
 
-app.use(require('cors')());
+//app.use(require('cors')());
 app.use(require('body-parser').json());
 app.use(bodyParser.json());
-app.user(require('./middleware/headers')); //not in gardenServer
-app.use(require('./middleware/validate-session'));
+//app.use(require('./middleware/headers')); //not in gardenServer
+//app.use(require('./middleware/validate-session'));
 
 app.use('/user', user);
 app.use('/stocks', stocks);

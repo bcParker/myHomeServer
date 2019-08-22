@@ -29,3 +29,5 @@ router.delete('/delete', (req, res) => {
 		.then(log => res.status(200).json({ Message: 'Successfully deleted (و ˃̵ᴗ˂̵)و'}))
 		.catch(log => res.status(500).json({Error: 'failed to delete'}))
 })
+
+module.exports = router;
