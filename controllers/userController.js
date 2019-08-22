@@ -95,8 +95,8 @@ router.post('/createuser', function (req, res) {
 router.delete('/delete', (req, res) => {
     User.destroy({
         where: {
-        name:req.body.user.name;
-        avatar:req.body.user.avatar;
+        name:req.body.user.name,
+        avatar:req.body.user.avatar
         }
     })
     .then(
