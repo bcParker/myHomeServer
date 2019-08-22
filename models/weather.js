@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.BOOLEAN, 
             allowNull: false, 
         },
-        user_ID: {
+        user: {
             type: DataTypes.INTEGER,
         },
     })
