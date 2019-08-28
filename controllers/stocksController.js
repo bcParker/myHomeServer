@@ -3,13 +3,13 @@ var router = express.Router()
 var sequelize = require('../db');
 var stocksModel = sequelize.import('../models/stocks');
 
-router.post('/stocks', function (req, res) {
-    let data = req.body.stocks;
-    let user = req.user.id;
+router.post('/add', function (req, res) {
+    let data = req.body.symbol;
+    let user = req.body.user;
 
-   stocksModel
+    stocksModel
         .create({
-            symbol: data.symbol,
+            symbol: data,
             user: user
         })
         .then(
@@ -21,7 +21,7 @@ router.post('/stocks', function (req, res) {
         );
 });
 
-router.get('/stocks', function (req, res) {
+router.get('/list', function (req, res) {
 
     stocksModel
         .findAll()
@@ -35,28 +35,21 @@ router.get('/stocks', function (req, res) {
         );
 });
 
-router.get('/stocks/:id', function (req, res) {
+router.get('/:id', function (req, res) {
     var data = req.params.id;
-    var userid = req.user.id;
 
     stocksModel
         .findOne({
-            where: { id: data, user: userid }
-        }).then(
-            function findOneSuccess(data) {
-                res.json(data);
-            },
-            function findOneError(err) {
-                res.send(500, err.message);
-            }
-        );
+            where: { id: data, }
+        }).then(user => res.status(200).json(user))
+        .catch(err => res.status(500).json({ error: err }))
 });
 
-router.put('/stocks/:id', function (req, res) {
+router.put('/:id', function (req, res) {
     var data = req.body;
     var updateInfo = req.params.id
 
-    drinkModel
+    stocksModel
         .update({
             symbol: data.symbol,
         },
@@ -64,7 +57,7 @@ router.put('/stocks/:id', function (req, res) {
         ).then(
             function updateSuccess(updatedStocks) {
                 res.json({
-                    drink: updatedStocks
+                    symbol: updatedStocks
                 });
             },
             function updateError(err) {
@@ -73,21 +66,17 @@ router.put('/stocks/:id', function (req, res) {
         )
 });
 
-router.delete('/stocks/:id', function (req, res) {
-    var data = req.params.id;
-    var userid = req.user.id;
-
-    drinkModel
+router.delete('/:id', function (req, res) {
+    stocksModel
         .destroy({
-            where: { id: data, user: userid }
-        }).then(
-            function deleteLogSuccess(data) {
-                res.send("you removed an equity");
-            },
-            function deleteLogError(err) {
-                res.send(500, err.message);
+            where: {id: req.params.id}})
+            .then(
+            function deleteLogSuccess() {
+                res.send("successfully deleted equity");
             }
-        );
-});
+        )
+        .catch(err => res.status(500).json({ error: {Error: 'failed to delete'} }))
+}
+);
 
 module.exports = router;
