@@ -71,8 +71,8 @@ router.post('/createuser', function (req, res) {
 
   router.put('/:id', function(req, res){
     let updateId = req.params.id;
-    let updateName = req.body.user.name;
-    let updateAvatar = req.body.user.avatar;
+    let updateName = req.body.name;
+    let updateAvatar = req.body.avatar;
 
     User
         .update({
@@ -95,8 +95,8 @@ router.post('/createuser', function (req, res) {
 router.delete('/delete', (req, res) => {
     User.destroy({
         where: {
-        name:req.body.user.name,
-        avatar:req.body.user.avatar
+        name:req.body.name,
+        avatar:req.body.avatar
         }
     })
     .then(

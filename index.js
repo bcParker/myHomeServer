@@ -14,9 +14,9 @@ sequelize.sync() //not in gardenServer
 app.use(require('body-parser').json());
 app.use(bodyParser.json());
 app.use(require('./middleware/headers')); //not in gardenServer
-//app.use(require('./middleware/validate-session'));
 
 app.use('/user', user);
+app.use(require('./middleware/validate-session'));
 app.use('/stocks', stocks);
 app.use('/weather', weather);
 

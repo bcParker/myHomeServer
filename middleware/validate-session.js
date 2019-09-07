@@ -6,7 +6,7 @@ module.exports = function(req, res, next) {
     if (req.method == 'OPTIONS') {
         next()
     } else {
-        var sessionToken = req.headers.authorization;
+        var sessionToken = req.headers.authorization.split(' ')[1];
         console.log(sessionToken)
         if (!sessionToken) return res.status(403).send({ auth: false, message: 'No token provided.' });
         else {
