@@ -8,10 +8,10 @@ var bcrypt = require('bcryptjs');
 
 router.post('/createuser', function (req, res) {
  
-    var email = req.body.user.email;
-    var pass = req.body.user.password;
-    var name = req.body.user.name;
-    var avatar = req.body.user.avatar;
+    var email = req.body.email;
+    var pass = req.body.password;
+    var name = req.body.name;
+    var avatar = req.body.avatar;
 
   
     User.create({
@@ -36,10 +36,10 @@ router.post('/createuser', function (req, res) {
   });
   
   router.post('/signin', function(req, res) {
-    User.findOne( { where: { email: req.body.user.email } } ).then(
+    User.findOne( { where: { email: req.body.email } } ).then(
         function(user) {
             if (user) {
-                bcrypt.compare(req.body.user.password, user.password, function(err, matches){
+                bcrypt.compare(req.body.password, user.password, function(err, matches){
                     
                     if (matches) {
                         
@@ -71,8 +71,8 @@ router.post('/createuser', function (req, res) {
 
   router.put('/:id', function(req, res){
     let updateId = req.params.id;
-    let updateName = req.body.user.name;
-    let updateAvatar = req.body.user.avatar;
+    let updateName = req.body.name;
+    let updateAvatar = req.body.avatar;
 
     User
         .update({
@@ -95,8 +95,8 @@ router.post('/createuser', function (req, res) {
 router.delete('/delete', (req, res) => {
     User.destroy({
         where: {
-        name:req.body.user.name,
-        avatar:req.body.user.avatar
+        name:req.body.name,
+        avatar:req.body.avatar
         }
     })
     .then(
