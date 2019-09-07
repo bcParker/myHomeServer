@@ -1,9 +1,9 @@
 const router = require('express').Router();
 const sequelize = require('../db');
-const Weather = sequelize.import('../models/weather');
+const db = require("../db");
 
 router.post('/add', (req, res) => {
-	Weather.create({
+	db.Weather.create({
 		city: req.body.city, //Format of request body might change
 		current_location: req.body.current_location, //Fromat of request body might change
 		user: req.user
@@ -13,19 +13,19 @@ router.post('/add', (req, res) => {
 })
 
 router.put('/changeLocation/:id', (req, res) => {
-	Weather.update(req.body, {where: {id: req.params.id}})
+	db.Weather.update(req.body, {where: {id: req.params.id}})
 		.then(log => res.status(200).json({ Message: 'Current Location Set (و ˃̵ᴗ˂̵)و'}))
 		.catch(err => res.status(500).json({Error: 'failed to update'}))
 })
 
 router.get('/display', (req, res) => {
-	Weather.findAll()
+	db.Weather.findAll()
 		.then(log => res.status(200).json(log))
 		.catch(err => res.status(500).json({Error: 'failed to retrieve'}))
 })
 
 router.delete('/delete', (req, res) => {
-	Weather.destroy({where: {city: req.body.city}})
+	db.Weather.destroy({where: {city: req.body.city}})
 		.then(log => res.status(200).json({ Message: 'Successfully deleted (و ˃̵ᴗ˂̵)و'}))
 		.catch(log => res.status(500).json({Error: 'failed to delete'}))
 })
