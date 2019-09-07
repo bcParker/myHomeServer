@@ -1,29 +1,25 @@
 var express = require('express')
 var router = express.Router()
-var sequelize = require('../db');
-var stocksModel = sequelize.import('../models/stocks');
+const db = require("../db")
 
 router.post('/add', function (req, res) {
     let data = req.body.symbol;
-    let user = req.body.user;
-
-    stocksModel
-        .create({
-            symbol: data,
-            user: user
-        })
-        .then(
-            function message(data) {
-                res.json({
-                    data: data
-                });
-            }
-        );
-});
+    // let user = req.body.user;
+console.log(req.user)
+    db.User.findOne({ where: { id: req.user.id } })
+        .then(foundUser => {
+            console.log(foundUser)
+            foundUser.createStock({
+                symbol: data,
+            })
+                .then(data => res.json({ data })
+        )
+})
+}),
 
 router.get('/list', function (req, res) {
 
-    stocksModel
+    db.Stocks
         .findAll()
         .then(
             function findAllSuccess(data) {
@@ -38,7 +34,7 @@ router.get('/list', function (req, res) {
 router.get('/:id', function (req, res) {
     var data = req.params.id;
 
-    stocksModel
+    db.Stocks
         .findOne({
             where: { id: data, }
         }).then(user => res.status(200).json(user))
@@ -49,7 +45,7 @@ router.put('/:id', function (req, res) {
     var data = req.body;
     var updateInfo = req.params.id
 
-    stocksModel
+    db.Stocks
         .update({
             symbol: data.symbol,
         },
@@ -67,15 +63,16 @@ router.put('/:id', function (req, res) {
 });
 
 router.delete('/:id', function (req, res) {
-    stocksModel
+    db.Stocks
         .destroy({
-            where: {id: req.params.id}})
-            .then(
+            where: { id: req.params.id }
+        })
+        .then(
             function deleteLogSuccess() {
                 res.send("successfully deleted equity");
             }
         )
-        .catch(err => res.status(500).json({ error: {Error: 'failed to delete'} }))
+        .catch(err => res.status(500).json({ error: { Error: 'failed to delete' } }))
 }
 );
 
