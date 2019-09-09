@@ -5,10 +5,6 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allow_null: false,
         },
-        user: {
-            type: DataTypes.INTEGER,
-            allow_null: true,
-        }
         })
 
     return Stocks;

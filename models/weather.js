@@ -8,9 +8,6 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.BOOLEAN, 
             allowNull: false, 
         },
-        user: {
-            type: DataTypes.INTEGER,
-        },
     })
 
     return Weather;
