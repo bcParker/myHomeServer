@@ -63,8 +63,8 @@ router.post('/createuser', function (req, res) {
     );
 });
 
-  router.get('/:name', (req, res) => {
-    User.findOne({ where: { name: req.params.name }})
+  router.get('/:id', (req, res) => {
+    User.findOne({ where: { id: req.params.id }})
       .then(user => res.status(200).json(user))
       .catch(err => res.status(500).json({ error: err}))
   })
@@ -92,6 +92,30 @@ router.post('/createuser', function (req, res) {
         )
 })
 
+router.put('/delete/:id', function(req, res){
+    let updateId = req.params.id;
+    let updateName = req.body.user.name;
+    let updateAvatar = req.body.user.avatar;
+
+    User
+        .update({
+            name: updateName,
+            avatar: updateAvatar,
+        }, {where: {id: updateId}})
+        .then(
+            function updateSuccess(){
+                res.json({
+                    name: updateName,
+                    avatar: updateAvatar,
+                })
+            }, 
+            function updateError(err){
+                res.send(500, err.message);
+            }
+        )
+})
+
+/*
 router.delete('/delete', (req, res) => {
     User.destroy({
         where: {
@@ -106,5 +130,5 @@ router.delete('/delete', (req, res) => {
     )
     .catch(err => res.status(500).json({ error: err}))
 })
-
+*/
 module.exports = router;
