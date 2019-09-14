@@ -1,19 +1,22 @@
-const router = require('express').Router();
-const sequelize = require('../db');
+var express = require('express');
+var router = express.Router();
 const db = require("../db");
 
 router.post('/add', (req, res) => {
 	db.Weather.create({
-		city: req.body.city, //Format of request body might change
-		current_location: req.body.current_location, //Fromat of request body might change
-		user: req.user
+		city: req.body.city,
+		current_location: req.body.current_location
 	})
 	.then(log => res.status(200).json({Message: 'Saved City'}))
 	.catch(err => res.status(500))
+	// .catch(err => console.log(err))
 })
 
-router.put('/changeLocation/:id', (req, res) => {
-	db.Weather.update(req.body, {where: {id: req.params.id}})
+router.put('/setLocation', (req, res) => {
+	console.log(req.user);
+	db.Weather.update({
+		current_location: req.body 
+	}, {where: {id: 1}})
 		.then(log => res.status(200).json({ Message: 'Current Location Set (و ˃̵ᴗ˂̵)و'}))
 		.catch(err => res.status(500).json({Error: 'failed to update'}))
 })
