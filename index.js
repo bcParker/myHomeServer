@@ -8,12 +8,12 @@ const weather = require('./controllers/weathercontroller');
 const bodyParser = require('body-parser');
 const db = require('./db');
 
-db.sequelize.sync() //not in gardenServer
+db.sequelize.sync()
 
 // app.use(require('cors')());
 app.use(require('body-parser').json());
 app.use(bodyParser.json());
-app.use(require('./middleware/headers')); //not in gardenServer
+app.use(require('./middleware/headers'));
 
 app.use('/user', user);
 
