@@ -1,9 +1,15 @@
 const Sequelize = require('sequelize');
 
-const sequelize = new Sequelize('myHome', 'postgres', 'Jismg8890@', {
-	host: 'localhost',
-	dialect: 'postgres'
-});
+new Sequelize(
+	process.env.DATABASE_URL ||
+	`postgresql://postgres:${encodeURIComponent(process.env.PASS)}@localhost/myHome`,
+	{
+		dialect: 'postgres',
+	})
+// const sequelize = new Sequelize('myHome', 'postgres', 'Jismg8890@', {
+// 	host: 'localhost',
+// 	dialect: 'postgres'
+// });
 
 sequelize.authenticate().then(
 	function() {
