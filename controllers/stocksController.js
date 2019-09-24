@@ -3,7 +3,7 @@ var router = express.Router()
 const db = require("../db")
 router.post('/add', function (req, res) {
     let data = req.body.symbol;
-    console.log(req.user)
+console.log(req.user)
     db.User.findOne({ where: { id: req.user.id } })
         .then(foundUser => {
             console.log(foundUser)
@@ -14,19 +14,23 @@ router.post('/add', function (req, res) {
                 )
         })
 }),
-    router.get('/list', function (req, res) {
-        db.Stocks
-            .findAll()
-            .then(
-                function findAllSuccess(data) {
-                    res.json(data);
-                },
-                function findAllError(err) {
-                    res.send(500, err.message);
-                }
-            );
-    });
+
+router.get('/list', function (req, res) {
+
+    db.Stocks
+        .findAll()
+        .then(
+            function findAllSuccess(data) {
+                res.json(data);
+            },
+            function findAllError(err) {
+                res.send(500, err.message);
+            }
+        );
+});
+
 router.get('/userstock', function (req, res) {
+
     db.Stocks
         .findAll({
             where: { userId: req.user.id, }
@@ -51,7 +55,8 @@ router.put('/:id', function (req, res) {
                 res.send(500, err.message);
             }
         )
-});
+ });
+
 router.delete('/:id', function (req, res) {
     db.Stocks
         .findOne({
@@ -60,8 +65,9 @@ router.delete('/:id', function (req, res) {
         .then(data => data.destroy())
         .then(
             function deleteLogSuccess() {
-                res.status(200).json({ message: 'successfully deleted equity' });
+                res.status(200).json({message: 'successfully deleted equity'});
             }
+
         )
         .catch(err => res.status(500).json({ error: { Error: 'failed to delete' } }))
 }
