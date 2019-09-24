@@ -3,21 +3,22 @@ var router = express.Router();
 const db = require("../db");
 
 router.post('/add', (req, res) => {
+	console.log(req.user)
 	db.Weather.create({
-		city: req.body.city,
-		current_location: req.body.current_location
+		city: req.body.city.name,
+		current_location: req.body.current_location,
+		userId: req.user.id
 	})
 	.then(log => res.status(200).json({Message: 'Saved City'}))
 	.catch(err => res.status(500))
-	// .catch(err => console.log(err))
 })
 
-router.put('/setLocation', (req, res) => {
+router.put('/setLocation/:id', (req, res) => {
 	console.log(req.user);
 	db.Weather.update({
-		current_location: req.body 
-	}, {where: {id: 1}})
-		.then(log => res.status(200).json({ Message: 'Current Location Set (و ˃̵ᴗ˂̵)و'}))
+		city: req.body.city.name
+	}, {where: {city: req.params.id}})
+		.then(log => res.status(200).json({ Message: 'City updated (و ˃̵ᴗ˂̵)و'}))
 		.catch(err => res.status(500).json({Error: 'failed to update'}))
 })
 
